@@ -32,11 +32,11 @@ jobs:
           Rename-Item ./dependencies/windows/SDL2-2.28.3 SDL2
       - name: Run vcpkg
         run: |
-          vcpkg install libogg:x86-windows-static-md libtheora:x86-windows-static-md
+          vcpkg install libogg:x86-windows-static-md libtheora:x86-windows-static-md sdl2:x86-windows-static-md
           vcpkg integrate install
       - name: Build rsdkv5u
         run: |
-          msbuild RSDKv5U.sln -target:RSDKv5U-sdl2 /p:Configuration=Release /p:Platform=x86
+          msbuild RSDKv5U.sln -target:RSDKv5U-sdl2 /p:Configuration=Release /p:Platform=x86 /p:ForceImportBeforeCppTargets="$env:GITHUB_WORKSPACE/props/winactions.props"
       - name: Move artifacts
         run: |
           mkdir artifacts

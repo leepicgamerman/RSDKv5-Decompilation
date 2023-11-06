@@ -30,6 +30,11 @@ jobs:
           Invoke-WebRequest -Uri "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip" -OutFile "GLEW.zip"
           Expand-Archive -Path GLEW.zip -DestinationPath ./dependencies/ogl
           Rename-Item ./dependencies/ogl/glew-2.2.0 glew
+      - name: Download GLFW
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.bin.WIN64.zip" -OutFile "GLFW.zip"
+          Expand-Archive -Path GLFW.zip -DestinationPath ./dependencies/ogl
+          Rename-Item ./dependencies/ogl/glfw-3.3.8.bin.WIN64 glfw
       - name: Run vcpkg
         run: |
           vcpkg install libogg:x86-windows-static-md libtheora:x86-windows-static-md

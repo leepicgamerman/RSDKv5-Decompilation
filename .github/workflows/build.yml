@@ -22,9 +22,9 @@ jobs:
           Rename-Item ./dependencies/windows/libtheora-1.2.0alpha1 libtheora
       - name: Download SDL2
         run: |
-          Invoke-WebRequest -Uri "https://libsdl.org/release/SDL2-devel-2.28.3-VC.zip" -OutFile "SDL2.zip"
-          Expand-Archive -Path SDL2.zip -DestinationPath ./
-          Rename-Item ./SDL2-2.28.3 SDL2
+          Invoke-WebRequest -Uri "https://github.com/libsdl-org/SDL/releases/download/release-2.28.5/SDL2-2.28.5-win32-x64.zip" -OutFile "SDL2.zip"
+          Expand-Archive -Path SDL2.zip -DestinationPath ./dependancies/windows/
+          Rename-Item ./dependancies/windows/SDL2-2.28.3 SDL2
       - name: Download GLEW
         run: |
           Invoke-WebRequest -Uri "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip" -OutFile "GLEW.zip"
@@ -37,7 +37,7 @@ jobs:
           Rename-Item ./dependencies/ogl/glfw-3.3.8.bin.WIN64 glfw
       - name: Run vcpkg
         run: |
-          vcpkg install libogg:x86-windows-static-md libtheora:x86-windows-static-md sdl2
+          vcpkg install libogg:x86-windows-static-md libtheora:x86-windows-static-md sdl2:x86-windows
           vcpkg integrate install
       - name: Build rsdkv5u
         run: |

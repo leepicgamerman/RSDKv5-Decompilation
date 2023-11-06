@@ -36,7 +36,7 @@ jobs:
           vcpkg integrate install
       - name: Build rsdkv5u
         run: |
-          msbuild RSDKv5U.sln -target:RSDKv5U-sdl2 /p:Configuration=Release /p:Platform=x86 /p:ForceImportBeforeCppTargets="$env:GITHUB_WORKSPACE/props/winactions.props"
+          msbuild RSDKv5U.sln -target:RSDKv5U-sdl2 /p:Configuration=Release /p:Platform=x86
       - name: Move artifacts
         run: |
           mkdir artifacts

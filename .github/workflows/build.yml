@@ -37,7 +37,7 @@ jobs:
           Rename-Item ./dependencies/ogl/glfw-3.3.8.bin.WIN64 glfw
       - name: Run vcpkg
         run: |
-          vcpkg install libogg:x86-windows-static-md libtheora:x86-windows-static-md
+          vcpkg install libogg:x86-windows-static-md libtheora:x86-windows-static-md sdl2
           vcpkg integrate install
       - name: Build rsdkv5u
         run: |

@@ -30,7 +30,7 @@ jobs:
           token: ${{ github.token }}
           github-binarycache: true
       - name: Setup cmake
-        uses: lukka/get-cmake@latest
+        uses: ssrobins/install-cmake@v1
       - name: Use cmake
         run: |
           cmake -B build -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static

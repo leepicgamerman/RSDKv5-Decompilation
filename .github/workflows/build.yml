@@ -1,34 +1,26 @@
-name: Build RSDKv5U
+name: Build RSDKv5u
 on:
   workflow_dispatch
 
-  v5-windows:
+jobs:
+  mania:
     runs-on: windows-2022
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v1
         with:
           submodules: recursive
-      - name: Setup MSYS2
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: MINGW32
-          update: true
-          install: pkg-config make git mingw-w64-i686-gcc mingw-w64-i686-libogg mingw-w64-i686-libtheora
-      - name: Build RSDKv5 + U
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+      - name: Build RSDKv5u
         run: |
-          make -j8 RSDK_ONLY=1
-          make -j8 clean-rsdk
-          make -j8 RSDK_ONLY=1 RSDK_REVISION=3
+          msbuild RSDKv5U.sln -target:RSDKv5U-sdl2 /p:Configuration=Release /p:Platform=x86 /p:ForceImportBeforeCppTargets="$env:GITHUB_WORKSPACE/props/winactions.props"
       - name: Move artifacts
         run: |
           mkdir artifacts
-          mv ./bin/Windows/DX9/*.exe ./artifacts
+          move ./build/Win32/Release/* ./artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: v5-windows
+          name: v5u-windows
           path: artifacts

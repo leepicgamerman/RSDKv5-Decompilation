@@ -90,7 +90,7 @@ elseif(RETRO_SUBSYSTEM STREQUAL "VK")
 
     find_package(Vulkan REQUIRED)
 
-    target_compile_definitions(RetroEngine VULKAN_USE_GLFW=1)
+    target_compile_definitions(RetroEngine PRIVATE VULKAN_USE_GLFW=1)
     target_link_libraries(RetroEngine
         glfw
         Vulkan::Vulkan
@@ -117,13 +117,6 @@ target_link_libraries(RetroEngine
     winmm
     comctl32
 )
-
-if(RETRO_MOD_LOADER)
-    set_target_properties(RetroEngine PROPERTIES
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON
-    )
-endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(RetroEngine PRIVATE -Wno-microsoft-cast -Wno-microsoft-exception-spec)

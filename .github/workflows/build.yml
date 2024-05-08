@@ -33,6 +33,8 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: '3.16.x'
+      - name: Use cmake
+        run: cmake --version
       - name: Move artifacts
         run: |
           mkdir artifacts

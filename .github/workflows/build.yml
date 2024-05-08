@@ -35,6 +35,7 @@ jobs:
           cmake-version: '3.16.x'
       - name: Use cmake
         run: |
+          set PATH=C:\Program Files (x86)\CMake 3.16\bin\;%PATH% 
           cmake -B build -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
           cmake --build build --config release
 

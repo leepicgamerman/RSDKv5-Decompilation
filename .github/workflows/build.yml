@@ -2,23 +2,33 @@ name: Build RSDKv5U
 on:
   workflow_dispatch
 
-jobs:
-  rsdkv5u:
-    runs-on: ubuntu-latest
+  v5-windows:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      - name: Checkout 
+        uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: Get dependencies
-        uses: |
-          sudo apt-get update
-          sudo apt install build-essential libglew-dev libglfw3-dev libtheora-dev zlib1g-dev libsdl2-dev
-      - name: Build RSDKv5U
-        uses: |
-          make RSDK_ONLY=1 RSDK_REVISION=3
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW32
+          update: true
+          install: pkg-config make git mingw-w64-i686-gcc mingw-w64-i686-libogg mingw-w64-i686-libtheora
+      - name: Build RSDKv5 + U
+        run: |
+          make -j8 RSDK_ONLY=1
+          make -j8 clean-rsdk
+          make -j8 RSDK_ONLY=1 RSDK_REVISION=3
+      - name: Move artifacts
+        run: |
+          mkdir artifacts
+          mv ./bin/Windows/DX9/*.exe ./artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: rsdkv5u
-          path: bin/Linux
+          name: v5-windows
+          path: artifacts

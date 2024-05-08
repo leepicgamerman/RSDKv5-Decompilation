@@ -14,7 +14,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1
       - name: Build RSDKv5u
         run: |
-          msbuild RSDKv5U.sln -target:RSDKv5U-sdl2 /p:Configuration=Release /p:Platform=x86 /p:ForceImportBeforeCppTargets="$env:GITHUB_WORKSPACE/props/winactions.props"
+          msbuild RSDKv5U.sln -target:RSDKv5U-dx9 /p:Configuration=Release /p:Platform=x64 /p:ForceImportBeforeCppTargets="$env:GITHUB_WORKSPACE/props/winactions.props"
       - name: Move artifacts
         run: |
           mkdir artifacts

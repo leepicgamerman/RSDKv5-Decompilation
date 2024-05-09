@@ -29,21 +29,17 @@ jobs:
           triplet: x64-windows-static
           token: ${{ github.token }}
           github-binarycache: true
-      - name: install cmake
-        uses: crazy-max/ghaction-chocolatey@v3
-        with:
-          args: install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-      - name: Use cmake
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+      - name: Build RSDKv5u
         run: |
-          cmake -B build -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
-          cmake --build build --config release
-
+          msbuild RSDKv5U.sln -target:RSDKv5U-sdl2 /p:Configuration=Release /p:Platform=x86 /p:ForceImportBeforeCppTargets="$env:GITHUB_WORKSPACE/props/winactions.props"
       - name: Move artifacts
         run: |
           mkdir artifacts
-          mv ./builds ./artifacts
+          move ./build/Win32/Release/* ./artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: v5-windows
+          name: v5u-windows
           path: artifacts

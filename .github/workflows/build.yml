@@ -13,9 +13,6 @@ on: workflow_dispatch
 jobs:
   v5-windows:
     runs-on: windows-2022
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -29,17 +26,21 @@ jobs:
           triplet: x64-windows-static
           token: ${{ github.token }}
           github-binarycache: true
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-      - name: Build RSDKv5u
+      - name: install cmake
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+      - name: Use cmake
         run: |
-          msbuild RSDKv5U.sln -target:RSDKv5U-dx9 /p:Configuration=Release /p:Platform=x86 /p:ForceImportBeforeCppTargets="$env:GITHUB_WORKSPACE/props/winactions.props"
+          cmake -B build -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
+          cmake --build build --config release
+
       - name: Move artifacts
         run: |
           mkdir artifacts
-          move ./build/Win32/Release/* ./artifacts
+          mv ./builds ./artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: v5u-windows
+          name: v5-windows
           path: artifacts

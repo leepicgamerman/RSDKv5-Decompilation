@@ -29,8 +29,10 @@ jobs:
           triplet: x64-windows-static
           token: ${{ github.token }}
           github-binarycache: true
-      - name: Setup cmake
-        uses: ssrobins/install-cmake@v1
+      - name: install cmake
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: -h
       - name: Use cmake
         run: |
           cmake -B build -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
